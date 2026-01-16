@@ -29,7 +29,7 @@ caminos mínimos.
 El código se ha dividido en distintos módulos con el objetivo de mejorar la
 claridad, la organización y el mantenimiento del programa.
 
-### `gps.py`
+### `gps_routing_madrid.py`
 Módulo principal del programa.  
 Se encarga de la interacción con el usuario, solicitando las direcciones de origen
 y destino, mostrando las instrucciones de navegación y representando la ruta
@@ -45,7 +45,7 @@ Incluye funciones para:
 
 ---
 
-### `callejero.py`
+### `graph_based_gps_madrid.py`
 Módulo auxiliar encargado de la carga y procesamiento del callejero de Madrid,
 así como de la construcción y tratamiento del grafo de la red vial.
 
@@ -59,7 +59,7 @@ Principales funcionalidades:
 
 ---
 
-### `grafo_pesado.py`
+### `gps_graph_algorithms.py`
 Módulo que contiene las implementaciones de los algoritmos de grafos necesarios
 para el cálculo de rutas óptimas.
 
