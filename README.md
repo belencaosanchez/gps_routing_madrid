@@ -1,115 +1,123 @@
 # GPS Routing System for Madrid
 
-This project implements a GPS-style application that calculates optimal routes
-in the street network of Madrid. The system allows users to compute different
-types of routes between two addresses using graph algorithms and real geographic data.
+Este proyecto implementa un programa GPS que permite calcular rutas óptimas en el
+callejero de Madrid. El sistema ofrece al usuario distintas opciones de ruta entre
+dos direcciones, utilizando algoritmos de grafos y datos geográficos reales.
 
-The application was developed as an academic project for the course *Discrete Mathematics*
-in the Bachelor in Mathematical Engineering and Artificial Intelligence.
-
----
-
-## Project Description
-
-The program allows the user to calculate optimal routes in the city of Madrid,
-offering three different routing modes:
-
-- Shortest route based on distance
-- Fastest route based on travel time
-- Fastest route considering expected traffic light delays
-
-The system uses real street data from the Madrid City Council and OpenStreetMap,
-and applies graph algorithms to compute optimal paths.
+El proyecto fue desarrollado como trabajo académico para la asignatura
+**Matemática Discreta** del Grado en Ingeniería Matemática e Inteligencia Artificial.
 
 ---
 
-## Project Structure and Modules
+## Descripción del Proyecto
 
-The code is organized into multiple modules to improve clarity and maintainability:
+El programa permite calcular rutas óptimas en la ciudad de Madrid, ofreciendo
+tres tipos distintos de rutas en función de las preferencias del usuario:
+
+- Ruta más corta en términos de distancia  
+- Ruta más rápida en términos de tiempo  
+- Ruta más rápida considerando el tiempo esperado debido a semáforos  
+
+El sistema utiliza datos reales del callejero de Madrid obtenidos del Ayuntamiento
+de Madrid y de OpenStreetMap, aplicando algoritmos de grafos para el cálculo de
+caminos mínimos.
+
+---
+
+## Organización del Código y Módulos
+
+El código se ha dividido en distintos módulos con el objetivo de mejorar la
+claridad, la organización y el mantenimiento del programa.
 
 ### `gps.py`
-Main application module.  
-Handles user interaction, requests origin and destination addresses, and displays
-navigation instructions and the selected route.
+Módulo principal del programa.  
+Se encarga de la interacción con el usuario, solicitando las direcciones de origen
+y destino, mostrando las instrucciones de navegación y representando la ruta
+calculada.
 
-Includes functions for:
-- Calculating edge weights based on distance
-- Calculating travel time using maximum speed
-- Estimating travel time including traffic light delays
-- Finding the closest graph node to a geographic coordinate
-- Generating navigation instructions
-- Visualizing the selected route
+Incluye funciones para:
+- Calcular el peso de las aristas en función de la distancia
+- Calcular el peso en función del tiempo de recorrido
+- Calcular el tiempo esperado teniendo en cuenta semáforos
+- Encontrar el nodo del grafo más cercano a unas coordenadas
+- Generar instrucciones detalladas de navegación
+- Visualizar la ruta sobre el grafo
 
 ---
 
 ### `callejero.py`
-Auxiliary module responsible for loading and processing street data and the road network.
+Módulo auxiliar encargado de la carga y procesamiento del callejero de Madrid,
+así como de la construcción y tratamiento del grafo de la red vial.
 
-Main functionalities:
-- Conversion of geographic coordinates from DMS format to decimal degrees
-- Loading the Madrid street directory from a CSV file (`direcciones.csv`)
-- Searching for specific addresses and retrieving their coordinates
-- Downloading the Madrid road network from OpenStreetMap
-- Processing the graph into a directed graph without loops
-- Drawing the street graph using geographic coordinates
+Principales funcionalidades:
+- Conversión de coordenadas geográficas del formato DMS a grados decimales
+- Carga del callejero desde el archivo `direcciones.csv`
+- Búsqueda de direcciones y obtención de sus coordenadas
+- Descarga del grafo de Madrid desde OpenStreetMap
+- Procesamiento del grafo para convertirlo en un grafo dirigido sin bucles
+- Representación gráfica del grafo utilizando coordenadas geográficas
 
 ---
 
 ### `grafo_pesado.py`
-Module containing implementations of graph algorithms used in the project.
+Módulo que contiene las implementaciones de los algoritmos de grafos necesarios
+para el cálculo de rutas óptimas.
 
-Implemented algorithms:
-- Dijkstra’s algorithm
-- Minimum path calculation
-- Prim’s algorithm
-- Kruskal’s algorithm
+Algoritmos implementados:
+- Algoritmo de Dijkstra
+- Cálculo del camino mínimo
+- Algoritmo de Prim
+- Algoritmo de Kruskal
 
-These algorithms are used to compute optimal routes and analyze the graph structure.
-
----
-
-## Data Structures Used
-
-The project makes use of several data structures:
-
-- **Pandas DataFrames**:  
-  Used to load and process the Madrid street directory from a CSV file.
-
-- **NetworkX Graphs**:  
-  A directed graph is used to represent Madrid’s road network, where:
-  - Nodes represent intersections or points on streets
-  - Edges represent road segments with attributes such as length, street name, and maximum speed
-
-- **Dictionaries and Lists**:  
-  Used in the implementation of graph algorithms to store distances, parent nodes,
-  routes, and navigation instructions.
+Estos algoritmos se utilizan para calcular los caminos óptimos y analizar la
+estructura del grafo.
 
 ---
 
-## Route Calculation Process
+## Estructuras de Datos Utilizadas
 
-1. The user enters origin and destination addresses in the format  
-   `"Street type Street name, number"`.
+El programa utiliza diversas estructuras de datos para el manejo de la información:
 
-2. The system searches the street directory and retrieves geographic coordinates
-   for both addresses.
+- **DataFrames de Pandas**:  
+  Utilizados para cargar y procesar el callejero de Madrid desde el archivo
+  `direcciones.csv`.
 
-3. The closest nodes in the street graph are identified.
+- **Grafos de NetworkX**:  
+  Se utiliza un grafo dirigido para representar la red vial de Madrid, donde:
+  - Los nodos representan intersecciones o puntos de las vías
+  - Las aristas representan tramos de carretera con atributos como longitud,
+    nombre de la calle o velocidad máxima
 
-4. Dijkstra’s algorithm is applied using the selected cost function:
-   - Distance-based
-   - Time-based
-   - Expected time including traffic lights
-
-5. The optimal route is computed and returned as a sequence of nodes.
-
-6. Navigation instructions are generated and displayed.
-
-7. The route is visually highlighted on the map.
+- **Diccionarios y Listas**:  
+  Utilizados en los algoritmos de grafos para almacenar distancias, nodos padre,
+  rutas calculadas e instrucciones de navegación.
 
 ---
 
-## Technologies and Libraries
+## Proceso de Cálculo de la Ruta Óptima
+
+1. El usuario introduce las direcciones de origen y destino en el formato  
+   `"Tipo de vía Nombre de la vía, número"`.
+
+2. El sistema busca dichas direcciones en el callejero y obtiene sus coordenadas
+   geográficas (latitud y longitud).
+
+3. Se identifican los nodos del grafo más cercanos a las coordenadas obtenidas.
+
+4. Se aplica el algoritmo de Dijkstra utilizando la función de coste seleccionada:
+   - Distancia
+   - Tiempo
+   - Tiempo esperado considerando semáforos
+
+5. Se calcula la ruta óptima entre el origen y el destino.
+
+6. Se generan las instrucciones de navegación correspondientes.
+
+7. La ruta se representa gráficamente sobre el grafo.
+
+---
+
+## Tecnologías y Librerías
 
 - Python
 - Pandas
@@ -117,23 +125,25 @@ The project makes use of several data structures:
 - OSMnx
 - Matplotlib
 
----
-
-## Academic Context
-
-This project was developed as part of the *Discrete Mathematics* course  
-at Universidad Pontificia Comillas (ICAI).
-
-It demonstrates the application of graph theory algorithms to real-world
-geospatial data and route optimization problems.
+Las dependencias del proyecto se encuentran especificadas en el archivo
+`requirements.txt`.
 
 ---
 
-## References
+## Contexto Académico
 
-- NetworkX Documentation  
+Este proyecto ha sido desarrollado como parte de la asignatura **Matemática
+Discreta** en la Universidad Pontificia Comillas (ICAI).
+
+El trabajo demuestra la aplicación de algoritmos de teoría de grafos a datos
+geoespaciales reales para la resolución de problemas de optimización de rutas.
+
+---
+
+## Referencias
+
+- Documentación de NetworkX  
 - OSMnx: Python for Street Networks  
 - OpenStreetMap  
-- Matplotlib Documentation  
+- Documentación de Matplotlib  
 - Dijkstra, E. W. (1959). *A note on two problems in connexion with graphs*
-
